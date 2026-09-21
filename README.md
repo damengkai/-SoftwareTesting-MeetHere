@@ -5,7 +5,7 @@
 ## 本 fork 的新增工作
 
 - `pytest_tests/`：第一版 Python 接口回归脚本。
-- `api_auto_framework/`：requests.Session、Cookie 登录态、pytest fixture、YAML 参数化和模块/优先级标记。
+- `api_auto_framework/`：最新版测试框架，requests.Session、Cookie 登录态、pytest fixture、YAML 参数化和模块/优先级标记。
 - 场馆页面及订单、留言视图对象的兼容性和空值处理调整。
 - AI 辅助编写部分代码；实现与测试局限见下文，不宣称生产交付或量化提效。
 
@@ -28,11 +28,11 @@ python -m venv .venv
 
 ## 验证范围与限制
 
-新版包含7条参数化用例。历史上只完成收集及服务不可达时的跳过验证，不能据此声称业务通过。旧版曾记录17 passed、3 skipped，冒烟6 passed，结果仅适用于当时环境。
+新版包含7条参数化用例。历史上只完成收集及服务不可达时的跳过验证，不能据此声称业务通过。第一版曾记录17 passed、3 skipped，冒烟6 passed，结果仅适用于当时环境。
 
 已知限制：当前场馆接口返回分页对象，YAML中仍以list断言，需要修正后实测；登录前置异常可能被跳过；查询结构断言尚未充分覆盖业务字段。暂无已验证的JMeter性能报告或70%提效数据。发布不代表这些问题已修复。
 
-Skill配套实验独立维护于 `https://github.com/damengkai/ai-testcase-skill`（仓库创建后可访问）。
+Skill配套实验独立维护于 `https://github.com/damengkai/ai-testcase-skill`。
 
 ## 原作者说明
 
