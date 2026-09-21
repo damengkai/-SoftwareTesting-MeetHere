@@ -4,7 +4,7 @@
 
 ## 本 fork 的新增工作
 
-- `pytest_tests/`：原版 Python 接口回归脚本。
+- `pytest_tests/`：第一版 Python 接口回归脚本。
 - `api_auto_framework/`：requests.Session、Cookie 登录态、pytest fixture、YAML 参数化和模块/优先级标记。
 - 场馆页面及订单、留言视图对象的兼容性和空值处理调整。
 - AI 辅助编写部分代码；实现与测试局限见下文，不宣称生产交付或量化提效。
