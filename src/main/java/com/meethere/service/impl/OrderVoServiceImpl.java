@@ -25,8 +25,13 @@ public class OrderVoServiceImpl implements OrderVoService {
     @Override
     public OrderVo returnOrderVoByOrderID(int orderID) {
         Order order=orderDao.findByOrderID(orderID);
+        if (order == null) {
+            return null;
+        }
+
         Venue venue=venueDao.findByVenueID(order.getVenueID());
-        OrderVo orderVo=new OrderVo(order.getOrderID(),order.getUserID(),order.getVenueID(),venue.getVenueName(),
+        String venueName = venue != null ? venue.getVenueName() : "场馆数据缺失";
+        OrderVo orderVo=new OrderVo(order.getOrderID(),order.getUserID(),order.getVenueID(),venueName,
                                     order.getState(),order.getOrderTime(),order.getStartTime(),order.getHours(),order.getTotal());
 
         return orderVo;
@@ -36,7 +41,10 @@ public class OrderVoServiceImpl implements OrderVoService {
     public List<OrderVo> returnVo(List<Order> list) {
         List<OrderVo> list1=new ArrayList<>();
         for(int i=0;i<list.size();i++) {
-            list1.add(returnOrderVoByOrderID(list.get(i).getOrderID()));
+            OrderVo orderVo = returnOrderVoByOrderID(list.get(i).getOrderID());
+            if (orderVo != null) {
+                list1.add(orderVo);
+            }
         }
         return list1;
     }

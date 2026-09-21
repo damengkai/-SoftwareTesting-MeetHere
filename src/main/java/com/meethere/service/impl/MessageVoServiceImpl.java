@@ -22,8 +22,15 @@ public class MessageVoServiceImpl implements MessageVoService {
     @Override
     public MessageVo returnMessageVoByMessageID(int messageID) {
         Message message=messageDao.findByMessageID(messageID);
+        if (message == null) {
+            return null;
+        }
+
         User user=userDao.findByUserID(message.getUserID());
-        MessageVo messageVo=new MessageVo(message.getMessageID(),user.getUserID(),message.getContent(),message.getTime(),user.getUserName(),user.getPicture(),message.getState());
+        String userId = user != null ? user.getUserID() : message.getUserID();
+        String userName = user != null ? user.getUserName() : "用户数据缺失";
+        String picture = user != null ? user.getPicture() : "";
+        MessageVo messageVo=new MessageVo(message.getMessageID(),userId,message.getContent(),message.getTime(),userName,picture,message.getState());
 
         return messageVo;
     }
@@ -32,7 +39,10 @@ public class MessageVoServiceImpl implements MessageVoService {
     public List<MessageVo> returnVo(List<Message> messages) {
         List<MessageVo> list=new ArrayList<>();
         for(int i=0;i<messages.size();i++){
-            list.add(returnMessageVoByMessageID(messages.get(i).getMessageID()));
+            MessageVo messageVo = returnMessageVoByMessageID(messages.get(i).getMessageID());
+            if (messageVo != null) {
+                list.add(messageVo);
+            }
         }
         return list;
     }

@@ -1,0 +1,105 @@
+- id: AUTH_001
+  name: 打开登录页
+  module: auth
+  priority: P0
+  marks: [smoke, auth]
+  session: anonymous
+  request:
+    method: GET
+    path: /login
+  assertions:
+    - status_in: [200]
+
+- id: AUTH_002
+  name: 普通用户登录成功
+  module: auth
+  priority: P0
+  marks: [smoke, auth]
+  session: anonymous
+  request:
+    method: POST_FORM
+    path: /loginCheck.do
+    form:
+      userID: "${MEETHERE_USER_ID:test}"
+      password: "${MEETHERE_USER_PASSWORD:test}"
+  assertions:
+    - status_in: [200]
+    - text_equals: /index
+    - cookie_exists: JSESSIONID
+
+- id: AUTH_003
+  name: 管理员登录成功
+  module: auth
+  priority: P0
+  marks: [smoke, auth]
+  session: anonymous
+  request:
+    method: POST_FORM
+    path: /loginCheck.do
+    form:
+      userID: "${MEETHERE_ADMIN_ID:admin}"
+      password: "${MEETHERE_ADMIN_PASSWORD:admin}"
+  assertions:
+    - status_in: [200]
+    - text_equals: /admin_index
+    - cookie_exists: JSESSIONID
+
+- id: VENUE_001
+  name: 查询场馆列表
+  module: venue
+  priority: P0
+  marks: [smoke, venue]
+  session: anonymous
+  request:
+    method: GET
+    path: /venuelist/getVenueList
+    params:
+      page: 1
+  assertions:
+    - status_in: [200]
+    - json_type: list
+
+- id: NEWS_001
+  name: 查询新闻列表
+  module: news
+  priority: P1
+  marks: [smoke, news]
+  session: anonymous
+  request:
+    method: GET
+    path: /news/getNewsList
+    params:
+      page: 1
+  assertions:
+    - status_in: [200]
+    - json_type: list
+
+- id: ORDER_001
+  name: 普通用户查询自己的订单列表
+  module: order
+  priority: P0
+  marks: [smoke, order, requires_login]
+  session: user
+  request:
+    method: GET
+    path: /getOrderList.do
+    params:
+      page: 1
+  assertions:
+    - status_in: [200]
+    - json_type: list
+
+- id: ADMIN_ORDER_001
+  name: 管理员查询预约订单列表
+  module: admin
+  priority: P0
+  marks: [smoke, admin, order, requires_login]
+  session: admin
+  request:
+    method: GET
+    path: /admin/getOrderList.do
+    params:
+      page: 1
+  assertions:
+    - status_in: [200]
+    - json_type: list
